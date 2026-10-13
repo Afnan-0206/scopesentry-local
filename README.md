@@ -1,10 +1,12 @@
 # ScopeSentry Local
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-scopesentry.pages.dev-emerald?style=flat&logo=cloudflare)](https://scopesentry.pages.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Local First](https://img.shields.io/badge/Privacy-100%25%20Local%20Loopback-blue.svg)](#privacy-guarantee)
 [![Inference](https://img.shields.io/badge/Inference-Ollama%20(Qwen2.5)-purple.svg)](#ai-architecture)
 [![Hacktoberfest](https://img.shields.io/badge/Hacktoberfest%202026-DEV%20Open--Source%20AI%20Challenge-orange.svg)](#hacktoberfest-2026-submission-details)
 
+> 🌐 **Live Deployment**: [https://scopesentry.pages.dev/](https://scopesentry.pages.dev/)  
 > **A local-first AI assistant that compares client requests against an agreed project scope, identifies potential scope changes, cites the original agreement verbatim, and drafts professional responses without requiring a paid AI API.**
 
 ---
@@ -192,7 +194,8 @@ Located in `server/tests/scenarios.test.ts`:
 
 ## 10. Cloudflare Pages Deployment
 
-ScopeSentry can be deployed directly to **Cloudflare Pages**:
+ScopeSentry is live on Cloudflare Pages: **[https://scopesentry.pages.dev/](https://scopesentry.pages.dev/)**
+
 - **Automatic SPA Client Routing**: Handled via `_redirects` (`/* /index.html 200`).
 - **Cloudflare Edge Functions**: Built-in API handlers in `functions/api/[[route]].ts`.
 - **Edge Asset Caching**: Optimized headers for heavy video and visual media in `_headers`.
@@ -212,9 +215,10 @@ See the complete step-by-step instructions in [CLOUDFLARE_DEPLOYMENT.md](file://
 
 ---
 
-## 11. Hacktoberfest 2026 Submission Details
+## 12. Hacktoberfest 2026 Submission Details
 
 This project was built for the **Hacktoberfest 2026 DEV Open-Source AI Challenge (Week 2 — Side Hustle)**.
+- **Live Demo**: [https://scopesentry.pages.dev/](https://scopesentry.pages.dev/)
 - **Theme**: Side Hustle / Independent Freelancing Tools
 - **Mission**: Empowering independent creators with private, open-source AI tools that protect client relationships and profit margins without subscription fees.
 - **Open-Source AI Integrity**: Relies genuinely on open-weight inference (Qwen 2.5 via Ollama) combined with deterministic software verification.

@@ -1,5 +1,7 @@
 # Deploying ScopeSentry to Cloudflare Pages
 
+> 🌐 **Live Production Deployment**: [https://scopesentry.pages.dev/](https://scopesentry.pages.dev/)
+
 This guide covers deploying ScopeSentry to Cloudflare Pages. The application is configured with SPA client-side routing, Cloudflare Pages Edge Functions, asset caching headers, and Cloudflare Tunnel integration.
 
 ---

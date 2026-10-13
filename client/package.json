@@ -2,6 +2,7 @@
   "name": "@scopesentry/client",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://scopesentry.pages.dev",
   "type": "module",
   "scripts": {
     "dev": "vite",

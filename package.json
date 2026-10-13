@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Local-first AI assistant for freelance project scope comparison and verification",
+  "homepage": "https://scopesentry.pages.dev",
   "workspaces": [
     "shared",
     "server",

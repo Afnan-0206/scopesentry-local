@@ -11,6 +11,14 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4 text-center md:text-right">
+          <a
+            href="https://scopesentry.pages.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-black transition font-mono text-[11px] underline underline-offset-4"
+          >
+            scopesentry.pages.dev
+          </a>
           <span className="flex items-center gap-1.5 text-[#111111] font-medium">
             <Award className="w-3.5 h-3.5 text-amber-600" />
             <span>Hacktoberfest 2026 — DEV Open-Source AI Challenge</span>
@@ -18,7 +26,7 @@ export const Footer: React.FC = () => {
         </div>
       </div>
       <div className="max-w-[1120px] mx-auto mt-4 text-center md:text-left text-[#5c5c5c] text-[11px] leading-relaxed">
-        ScopeSentry is a decision-support tool for independent freelancers. It does not provide formal legal determinations, contract drafting, or binding counsel. Background video is streamed from the reference demonstration host.
+        ScopeSentry is a decision-support tool for independent freelancers. It does not provide formal legal determinations, contract drafting, or binding counsel. Hosted globally on Cloudflare Pages at <a href="https://scopesentry.pages.dev/" className="underline hover:text-black">scopesentry.pages.dev</a>.
       </div>
     </footer>
   );

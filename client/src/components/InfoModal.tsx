@@ -93,6 +93,17 @@ export const InfoModal: React.FC<Props> = ({ type, onClose }) => {
               <p>
                 Built for the <strong>Hacktoberfest 2026 DEV Open-Source AI Challenge</strong> (Week 2: Side Hustle), it demonstrates that open-weight models (Qwen 2.5 via Ollama) combined with deterministic software verification can replace costly proprietary AI APIs for real professional workflows.
               </p>
+              <p className="text-xs">
+                🌐 Live deployment:{' '}
+                <a
+                  href="https://scopesentry.pages.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black font-semibold underline underline-offset-4"
+                >
+                  https://scopesentry.pages.dev/
+                </a>
+              </p>
               <p className="pt-1 text-[11px] text-[#5c5c5c]/80 border-t border-black/8">
                 *Decision-support tool only. Does not constitute binding legal determinations or formal contract advice.
               </p>
