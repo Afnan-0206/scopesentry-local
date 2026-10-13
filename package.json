@@ -13,6 +13,8 @@
     "dev:server": "npm run dev --workspace=server",
     "dev:client": "npm run dev --workspace=client",
     "build": "npm run build --workspace=shared && npm run build --workspace=server && npm run build --workspace=client",
+    "build:pages": "npm run build --workspace=shared && npm run build --workspace=client",
+    "deploy:pages": "npx wrangler pages deploy client/dist",
     "test": "npm run test --workspace=server && npm run test --workspace=client",
     "test:server": "npm run test --workspace=server",
     "test:client": "npm run test --workspace=client",

@@ -32,6 +32,9 @@ export const CompareRequestPage: React.FC<Props> = ({
   onBack,
 }) => {
   const [clientRequestText, setClientRequestText] = useState('');
+  const [selectedModel, setSelectedModel] = useState<string>(
+    health?.ollama?.configuredModel || 'qwen2.5:7b'
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showScopeDrawer, setShowScopeDrawer] = useState(false);
@@ -62,6 +65,7 @@ export const CompareRequestPage: React.FC<Props> = ({
           originalAgreementText: project.originalAgreementText,
           approvedScope: project.approvedScope,
           newClientRequest: clientRequestText.trim(),
+          model: selectedModel,
         },
         isDemoMode
       );
@@ -97,27 +101,27 @@ export const CompareRequestPage: React.FC<Props> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-4 space-y-6">
+    <div className="max-w-[880px] mx-auto py-6 space-y-6 animate-rise">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/8">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition"
+            className="p-1.5 text-[#5c5c5c] hover:text-[#111111] hover:bg-black/5 rounded-[7px] transition"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-medium tracking-tight text-[#111111] flex items-center gap-2">
               <span>{project.projectName}</span>
               {project.clientLabel && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-black/5 text-[#5c5c5c] font-mono">
                   {project.clientLabel}
                 </span>
               )}
             </h1>
-            <p className="text-xs text-slate-400">
-              Check a new client message against the approved scope agreement.
+            <p className="text-xs text-[#5c5c5c] mt-0.5">
+              Check a new client request against the approved deliverables and exclusions.
             </p>
           </div>
         </div>
@@ -125,41 +129,41 @@ export const CompareRequestPage: React.FC<Props> = ({
         <button
           type="button"
           onClick={() => setShowScopeDrawer(!showScopeDrawer)}
-          className="text-xs px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition self-start sm:self-auto"
+          className="text-xs px-3.5 py-2 rounded-[9px] bg-white hover:bg-black/4 text-[#111111] border border-black/10 flex items-center gap-2 transition self-start sm:self-auto shadow-sm"
         >
-          <FileCheck2 className="w-3.5 h-3.5 text-emerald-400" />
-          <span>View Approved Scope ({project.approvedScope.deliverables.length})</span>
+          <FileCheck2 className="w-4 h-4 text-emerald-700" />
+          <span>Agreed Scope ({project.approvedScope.deliverables.length})</span>
           {showScopeDrawer ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         </button>
       </div>
 
       {!isOllamaRunning && (
-        <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-800/60 text-amber-200 text-xs flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>Ollama appears offline. Switch to Demo Fixtures in Settings if you wish to test with sample data.</span>
+        <div className="p-3.5 rounded-[12px] bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0 text-amber-700" />
+          <span>Ollama is offline. Switch to Demo Fixtures in Settings to test without live inference.</span>
         </div>
       )}
 
       {/* Scope Drawer Collapsible */}
       {showScopeDrawer && (
-        <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-3">
-          <h3 className="font-semibold text-slate-200">Approved Agreement Reference:</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="p-5 rounded-[20px] bg-[#fafbf9] border border-black/8 text-xs space-y-3.5 shadow-sm animate-rise">
+          <h3 className="font-semibold text-[#111111]">Approved Agreement Reference:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <p className="text-slate-400 font-medium mb-1">Agreed Deliverables:</p>
-              <ul className="space-y-1 text-slate-300">
+              <p className="text-[#111111] font-medium mb-1.5">Agreed Deliverables:</p>
+              <ul className="space-y-1 text-[#5c5c5c]">
                 {project.approvedScope.deliverables.map((d) => (
                   <li key={d.id}>• {d.text}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <p className="text-amber-400 font-medium mb-1">Explicit Exclusions:</p>
-              <ul className="space-y-1 text-amber-200/90">
+              <p className="text-amber-900 font-medium mb-1.5">Explicit Exclusions:</p>
+              <ul className="space-y-1 text-[#5c5c5c]">
                 {project.approvedScope.explicitExclusions.length > 0 ? (
                   project.approvedScope.explicitExclusions.map((e) => <li key={e.id}>• {e.text}</li>)
                 ) : (
-                  <li className="text-slate-500 italic">None expressly listed</li>
+                  <li className="italic text-[#888888]">None expressly listed</li>
                 )}
               </ul>
             </div>
@@ -168,14 +172,14 @@ export const CompareRequestPage: React.FC<Props> = ({
       )}
 
       {/* Comparison Form */}
-      <form onSubmit={handleSubmit} className="bg-slate-900/60 p-6 rounded-xl border border-slate-800 space-y-4">
+      <form onSubmit={handleSubmit} className="bg-[#fafbf9] p-6 sm:p-8 rounded-[20px] border border-black/8 shadow-sm space-y-5">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-medium text-slate-300">
-            Paste Client Message or Requested Changes <span className="text-emerald-400">*</span>
+          <label className="text-xs font-medium text-[#111111]">
+            Client Message or Requested Changes <span className="text-rose-500">*</span>
           </label>
           <span
             className={`text-[11px] font-mono ${
-              isOverLimit ? 'text-rose-400 font-bold' : 'text-slate-500'
+              isOverLimit ? 'text-rose-600 font-bold' : 'text-[#5c5c5c]'
             }`}
           >
             {charCount.toLocaleString()} / {MAX_REQUEST_CHARS.toLocaleString()}
@@ -187,56 +191,78 @@ export const CompareRequestPage: React.FC<Props> = ({
           rows={6}
           value={clientRequestText}
           onChange={(e) => setClientRequestText(e.target.value)}
-          placeholder="Paste the email, Slack message, or list of requested features from the client..."
-          className={`w-full bg-slate-950 border rounded-lg p-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none transition leading-relaxed ${
-            isOverLimit ? 'border-rose-500' : 'border-slate-800 focus:border-emerald-500'
+          placeholder="Paste the email, Slack message, or feature request from your client..."
+          className={`w-full bg-white border rounded-[12px] p-4 text-xs font-sans text-[#111111] placeholder-[#888888] focus:outline-none transition leading-relaxed ${
+            isOverLimit ? 'border-rose-500' : 'border-black/10 focus:border-black'
           }`}
         />
 
-        {/* Quick Sample Prompts */}
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          <span className="text-[11px] text-slate-500">Test quick scenarios:</span>
-          <button
-            type="button"
-            onClick={() => handleQuickSample('included')}
-            className="text-[11px] px-2 py-1 rounded bg-slate-800/80 hover:bg-slate-800 text-emerald-400 border border-slate-700 transition"
-          >
-            Agreed Deliverable
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickSample('excluded')}
-            className="text-[11px] px-2 py-1 rounded bg-slate-800/80 hover:bg-slate-800 text-amber-400 border border-slate-700 transition"
-          >
-            Unagreed Feature (Auth/Payments)
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickSample('ambiguous')}
-            className="text-[11px] px-2 py-1 rounded bg-slate-800/80 hover:bg-slate-800 text-sky-400 border border-slate-700 transition"
-          >
-            Vague Requirement
-          </button>
+        {/* Quick Sample Prompts & Model Option */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] text-[#5c5c5c]">Test sample:</span>
+            <button
+              type="button"
+              onClick={() => handleQuickSample('included')}
+              className="text-[11px] px-2.5 py-1 rounded-full bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 transition"
+            >
+              Agreed Deliverable
+            </button>
+            <button
+              type="button"
+              onClick={() => handleQuickSample('excluded')}
+              className="text-[11px] px-2.5 py-1 rounded-full bg-white hover:bg-amber-50 text-amber-800 border border-amber-200 transition"
+            >
+              Excluded Feature (Auth/Payments)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleQuickSample('ambiguous')}
+              className="text-[11px] px-2.5 py-1 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 transition"
+            >
+              Vague Requirement
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-[11px] text-[#5c5c5c]">Model:</span>
+            <select
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className="bg-white border border-black/10 rounded-[7px] px-2 py-1 text-[11px] text-[#111111] focus:outline-none focus:border-black"
+            >
+              {health?.ollama?.availableModels?.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              )) || (
+                <>
+                  <option value="qwen2.5:7b">qwen2.5:7b</option>
+                  <option value="qwen2.5:0.5b">qwen2.5:0.5b (Fast)</option>
+                </>
+              )}
+            </select>
+          </div>
         </div>
 
         {errorMessage && (
-          <div className="p-3 rounded-lg bg-rose-950/60 border border-rose-800/80 text-rose-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="p-4 rounded-[12px] bg-rose-50 border border-rose-200 text-rose-900 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
             <span>{errorMessage}</span>
           </div>
         )}
 
-        <div className="pt-3 border-t border-slate-800/60 flex items-center justify-end">
+        <div className="pt-3 border-t border-black/8 flex items-center justify-end">
           <button
             type="submit"
             disabled={isLoading || isOverLimit || clientRequestText.trim().length < 5}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold rounded-lg shadow-sm transition"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#141414] hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-[9px] shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition duration-150"
           >
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 <span>
-                  {isDemoMode ? 'Analyzing Demo Fixture...' : 'Comparing Locally with Ollama...'}
+                  {isDemoMode ? 'Analyzing Demo Scope...' : `Comparing with ${selectedModel}...`}
                 </span>
               </>
             ) : (
@@ -251,31 +277,31 @@ export const CompareRequestPage: React.FC<Props> = ({
 
       {/* History of Past Assessments */}
       {project.assessments && project.assessments.length > 0 && (
-        <div className="space-y-3 pt-4 border-t border-slate-800">
-          <h2 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-            <History className="w-4 h-4 text-slate-400" />
+        <div className="space-y-3 pt-6 border-t border-black/8">
+          <h2 className="text-sm font-semibold text-[#111111] flex items-center gap-2">
+            <History className="w-4 h-4 text-[#5c5c5c]" />
             <span>Previous Assessments ({project.assessments.length})</span>
           </h2>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {project.assessments.map((assess, index) => (
               <div
                 key={assess.id}
                 onClick={() => onAssessmentCompleted(project, index)}
-                className="p-4 rounded-xl bg-slate-900/40 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 cursor-pointer transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                className="p-4 rounded-[16px] bg-[#fafbf9] hover:bg-white border border-black/8 hover:border-black/20 cursor-pointer transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-sm hover:shadow"
               >
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <StatusBadge status={assess.primaryStatus} size="sm" />
-                    <span className="text-slate-500 flex items-center gap-1 font-mono">
+                    <span className="text-[#5c5c5c] flex items-center gap-1 font-mono text-[11px]">
                       <Clock className="w-3 h-3" />
                       {new Date(assess.evaluatedAt).toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-slate-200 font-medium line-clamp-1">{assess.shortSummary}</p>
+                  <p className="text-[#111111] font-medium line-clamp-1">{assess.shortSummary}</p>
                 </div>
 
-                <span className="text-emerald-400 font-medium shrink-0 self-start sm:self-auto">
+                <span className="text-[#111111] font-medium shrink-0 self-start sm:self-auto hover:underline">
                   View Assessment →
                 </span>
               </div>

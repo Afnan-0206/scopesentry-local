@@ -9,7 +9,8 @@ export const CompareRequestInputSchema = z.object({
   newClientRequest: z
     .string()
     .min(5, 'Client request must be at least 5 characters')
-    .max(MAX_REQUEST_CHARS, `Client request must not exceed ${MAX_REQUEST_CHARS} characters`)
+    .max(MAX_REQUEST_CHARS, `Client request must not exceed ${MAX_REQUEST_CHARS} characters`),
+  model: z.string().optional()
 });
 
 export type CompareRequestInput = z.infer<typeof CompareRequestInputSchema>;

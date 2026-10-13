@@ -190,7 +190,20 @@ Located in `server/tests/scenarios.test.ts`:
 
 ---
 
-## 10. Privacy & Security Disclosures
+## 10. Cloudflare Pages Deployment
+
+ScopeSentry can be deployed directly to **Cloudflare Pages**:
+- **Automatic SPA Client Routing**: Handled via `_redirects` (`/* /index.html 200`).
+- **Cloudflare Edge Functions**: Built-in API handlers in `functions/api/[[route]].ts`.
+- **Edge Asset Caching**: Optimized headers for heavy video and visual media in `_headers`.
+- **Wrangler Integration**: `npm run deploy:pages` and `wrangler.json`.
+- **Cloudflare Tunnel Support**: Connect the Cloudflare-hosted frontend to your local GPU's Ollama instance securely with zero port forwarding.
+
+See the complete step-by-step instructions in [CLOUDFLARE_DEPLOYMENT.md](file:///c:/Users/hp/Desktop/Projects/SCOPESENTRY/CLOUDFLARE_DEPLOYMENT.md).
+
+---
+
+## 11. Privacy & Security Disclosures
 
 - **Loopback Enforcement**: The backend server binds strictly to `127.0.0.1`. It does not listen on public network interfaces.
 - **No Remote Telemetry**: ScopeSentry does not phone home, log analytics, or transmit agreement text to remote endpoints.

@@ -4,6 +4,8 @@ import { StorageService } from './services/storage.service.js';
 import { ApiService, BackendHealth } from './services/api.service.js';
 import { Header } from './components/Header.js';
 import { Footer } from './components/Footer.js';
+import { HeroLanding } from './components/HeroLanding.js';
+import { InfoModal, InfoModalType } from './components/InfoModal.js';
 import { ProjectsPage } from './pages/ProjectsPage.js';
 import { CreateProjectPage } from './pages/CreateProjectPage.js';
 import { ReviewAgreementPage } from './pages/ReviewAgreementPage.js';
@@ -12,7 +14,7 @@ import { AssessmentResultsPage } from './pages/AssessmentResultsPage.js';
 import { SettingsPage } from './pages/SettingsPage.js';
 
 export const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<AppView>('projects');
+  const [currentView, setCurrentView] = useState<AppView>('hero');
   const [isDemoMode, setIsDemoMode] = useState<boolean>(() => {
     return localStorage.getItem('scopesentry_demo_mode') === 'true';
   });
@@ -20,8 +22,10 @@ export const App: React.FC = () => {
   const [projects, setProjects] = useState<StoredProject[]>([]);
   const [activeProject, setActiveProject] = useState<StoredProject | null>(null);
   const [pendingAnalysis, setPendingAnalysis] = useState<PendingAgreementAnalysis | null>(null);
+  const [pendingInitialText, setPendingInitialText] = useState<string>('');
   const [activeAssessmentIndex, setActiveAssessmentIndex] = useState<number>(0);
   const [health, setHealth] = useState<BackendHealth | null>(null);
+  const [activeInfoModal, setActiveInfoModal] = useState<InfoModalType>(null);
 
   // Load health and check local Ollama availability
   const checkHealth = async () => {
@@ -107,96 +111,143 @@ export const App: React.FC = () => {
     setCurrentView('assessment');
   };
 
+  const handleHeroStartComparison = (project: StoredProject, clientRequestText: string) => {
+    setActiveProject(project);
+    setPendingInitialText(clientRequestText);
+    setCurrentView('compare');
+  };
+
+  const handleHeroCreateWithText = (text: string) => {
+    setPendingInitialText(text);
+    setCurrentView('create');
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100 font-sans">
+    <div className="flex flex-col min-h-screen bg-[#eef2ee] text-[#111111] font-sans selection:bg-[#111111] selection:text-white">
+      {/* Universal Minimal Navigation */}
       <Header
         currentView={currentView}
         onNavigate={(view) => setCurrentView(view)}
+        onOpenInfo={(type) => setActiveInfoModal(type)}
         health={health}
         isDemoMode={isDemoMode}
       />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6">
-        {currentView === 'projects' && (
-          <ProjectsPage
+      {/* Main Content Area */}
+      <main className="flex-1 w-full flex flex-col">
+        {currentView === 'hero' && (
+          <HeroLanding
             projects={projects}
-            isDemoMode={isDemoMode}
-            onSelectProject={handleSelectProject}
-            onCreateNew={() => setCurrentView('create')}
-            onDeleteProject={handleDeleteProject}
-            onRefreshProjects={loadProjects}
+            onStartComparison={handleHeroStartComparison}
+            onCreateWithText={handleHeroCreateWithText}
+            onOpenWorkspace={() => setCurrentView('projects')}
+            onOpenHowItWorks={() => setActiveInfoModal('how-it-works')}
           />
+        )}
+
+        {currentView === 'projects' && (
+          <div className="flex-1 max-w-[1120px] w-full mx-auto px-4 sm:px-8 py-4">
+            <ProjectsPage
+              projects={projects}
+              isDemoMode={isDemoMode}
+              onSelectProject={handleSelectProject}
+              onCreateNew={() => {
+                setPendingInitialText('');
+                setCurrentView('create');
+              }}
+              onDeleteProject={handleDeleteProject}
+              onRefreshProjects={loadProjects}
+            />
+          </div>
         )}
 
         {currentView === 'create' && (
-          <CreateProjectPage
-            isDemoMode={isDemoMode}
-            health={health}
-            onAnalysisSuccess={handleAnalysisSuccess}
-            onCancel={() => setCurrentView('projects')}
-            onOpenSettings={() => setCurrentView('settings')}
-          />
+          <div className="flex-1 max-w-[1120px] w-full mx-auto px-4 sm:px-8 py-4">
+            <CreateProjectPage
+              isDemoMode={isDemoMode}
+              health={health}
+              initialText={pendingInitialText}
+              onAnalysisSuccess={handleAnalysisSuccess}
+              onCancel={() => setCurrentView(projects.length > 0 ? 'projects' : 'hero')}
+              onOpenSettings={() => setCurrentView('settings')}
+              onEnableDemoMode={() => handleToggleDemoMode(true)}
+            />
+          </div>
         )}
 
         {currentView === 'review' && pendingAnalysis && (
-          <ReviewAgreementPage
-            analysis={pendingAnalysis}
-            isDemoMode={isDemoMode}
-            onSaved={handleProjectSaved}
-            onBackToEdit={() => setCurrentView('create')}
-          />
+          <div className="flex-1 max-w-[1120px] w-full mx-auto px-4 sm:px-8 py-4">
+            <ReviewAgreementPage
+              analysis={pendingAnalysis}
+              isDemoMode={isDemoMode}
+              onSaved={handleProjectSaved}
+              onBackToEdit={() => setCurrentView('create')}
+            />
+          </div>
         )}
 
         {currentView === 'compare' && activeProject && (
-          <CompareRequestPage
-            project={activeProject}
-            isDemoMode={isDemoMode}
-            health={health}
-            onAssessmentCompleted={handleAssessmentCompleted}
-            onBack={() => setCurrentView('projects')}
-          />
+          <div className="flex-1 max-w-[1120px] w-full mx-auto px-4 sm:px-8 py-4">
+            <CompareRequestPage
+              project={activeProject}
+              isDemoMode={isDemoMode}
+              health={health}
+              onAssessmentCompleted={handleAssessmentCompleted}
+              onBack={() => setCurrentView('projects')}
+            />
+          </div>
         )}
 
         {currentView === 'assessment' && activeProject && (
-          <AssessmentResultsPage
-            project={activeProject}
-            assessment={
-              activeProject.assessments && activeProject.assessments[activeAssessmentIndex]
-                ? activeProject.assessments[activeAssessmentIndex]
-                : {
-                    id: 'temp',
-                    projectId: activeProject.id,
-                    primaryStatus: 'NEEDS CLARIFICATION',
-                    shortSummary: 'No assessment selected.',
-                    requestedChangesIdentified: [],
-                    relevantOriginalScopeItems: [],
-                    supportingQuotations: [],
-                    missingOrAmbiguousInfo: [],
-                    suggestedNextStep: 'Check a new request.',
-                    draftReply: '',
-                    evidenceValidationWarnings: [],
-                    evaluatedAt: new Date().toISOString(),
-                  }
-            }
-            isDemoMode={isDemoMode}
-            onBackToCompare={() => setCurrentView('compare')}
-          />
+          <div className="flex-1 max-w-[1120px] w-full mx-auto px-4 sm:px-8 py-4">
+            <AssessmentResultsPage
+              project={activeProject}
+              assessment={
+                activeProject.assessments && activeProject.assessments[activeAssessmentIndex]
+                  ? activeProject.assessments[activeAssessmentIndex]
+                  : {
+                      id: 'temp',
+                      projectId: activeProject.id,
+                      primaryStatus: 'NEEDS CLARIFICATION',
+                      shortSummary: 'No assessment selected.',
+                      requestedChangesIdentified: [],
+                      relevantOriginalScopeItems: [],
+                      supportingQuotations: [],
+                      missingOrAmbiguousInfo: [],
+                      suggestedNextStep: 'Check a new request.',
+                      draftReply: '',
+                      evidenceValidationWarnings: [],
+                      evaluatedAt: new Date().toISOString(),
+                    }
+              }
+              isDemoMode={isDemoMode}
+              onBackToCompare={() => setCurrentView('compare')}
+            />
+          </div>
         )}
 
         {currentView === 'settings' && (
-          <SettingsPage
-            health={health}
-            isDemoMode={isDemoMode}
-            onToggleDemoMode={handleToggleDemoMode}
-            onRefreshHealth={checkHealth}
-            onDataCleared={() => {
-              loadProjects();
-              setActiveProject(null);
-              setCurrentView('projects');
-            }}
-          />
+          <div className="flex-1 max-w-[1120px] w-full mx-auto px-4 sm:px-8 py-4">
+            <SettingsPage
+              health={health}
+              isDemoMode={isDemoMode}
+              onToggleDemoMode={handleToggleDemoMode}
+              onRefreshHealth={checkHealth}
+              onDataCleared={() => {
+                loadProjects();
+                setActiveProject(null);
+                setCurrentView('hero');
+              }}
+            />
+          </div>
         )}
       </main>
+
+      {/* Accessible Interactive Info Modal */}
+      <InfoModal
+        type={activeInfoModal}
+        onClose={() => setActiveInfoModal(null)}
+      />
 
       <Footer />
     </div>

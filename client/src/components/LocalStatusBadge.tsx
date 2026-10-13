@@ -1,5 +1,4 @@
-import React from 'react';
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { BackendHealth } from '../services/api.service.js';
 
 interface Props {
@@ -13,11 +12,11 @@ export const LocalStatusBadge: React.FC<Props> = ({ health, isDemoMode, onOpenSe
     return (
       <button
         onClick={onOpenSettings}
-        className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-indigo-950/70 text-indigo-300 border border-indigo-800/60 hover:bg-indigo-900/60 transition"
+        className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition shadow-sm"
         title="Demo Fixtures Mode is currently active. Click to view Settings."
       >
-        <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-        <span>Demo Fixtures Mode</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+        <span>Demo Fixtures</span>
       </button>
     );
   }
@@ -28,10 +27,10 @@ export const LocalStatusBadge: React.FC<Props> = ({ health, isDemoMode, onOpenSe
   return (
     <button
       onClick={onOpenSettings}
-      className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full border transition ${
+      className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full border transition shadow-sm ${
         isOllamaRunning
-          ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/50 hover:bg-emerald-900/40'
-          : 'bg-rose-950/60 text-rose-300 border-rose-800/50 hover:bg-rose-900/40'
+          ? 'bg-white/80 text-[#111111] border-black/8 hover:bg-white'
+          : 'bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100'
       }`}
       title={
         isOllamaRunning
@@ -41,12 +40,12 @@ export const LocalStatusBadge: React.FC<Props> = ({ health, isDemoMode, onOpenSe
     >
       {isOllamaRunning ? (
         <>
-          <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Local AI: {modelName}</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>{modelName}</span>
         </>
       ) : (
         <>
-          <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+          <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
           <span>Ollama Offline</span>
         </>
       )}

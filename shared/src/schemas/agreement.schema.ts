@@ -34,7 +34,8 @@ export const AnalyzeAgreementInputSchema = z.object({
     .string()
     .min(10, 'Agreement text must be at least 10 characters')
     .max(MAX_AGREEMENT_CHARS, `Agreement text must not exceed ${MAX_AGREEMENT_CHARS} characters`),
-  notes: z.string().max(5000).optional().default('')
+  notes: z.string().max(5000).optional().default(''),
+  model: z.string().optional()
 });
 
 export type AnalyzeAgreementInput = z.infer<typeof AnalyzeAgreementInputSchema>;

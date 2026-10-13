@@ -29,6 +29,12 @@ export class OllamaService {
     this.timeoutMs = timeoutMs;
   }
 
+  public setConfiguredModel(model: string): void {
+    if (model && model.trim()) {
+      this.configuredModel = model.trim();
+    }
+  }
+
   /**
    * Check connection and model availability
    */

@@ -1,6 +1,6 @@
 import { ProjectAgreement, ScopeAssessment, ExtractedScope } from '@scopesentry/shared';
 
-export type AppView = 'projects' | 'create' | 'review' | 'compare' | 'assessment' | 'settings';
+export type AppView = 'hero' | 'projects' | 'create' | 'review' | 'compare' | 'assessment' | 'settings';
 
 export interface StoredProject extends ProjectAgreement {
   assessments: ScopeAssessment[];

@@ -92,79 +92,79 @@ export const ReviewAgreementPage: React.FC<Props> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-4 space-y-6">
+    <div className="max-w-[880px] mx-auto py-6 space-y-6 animate-rise">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/8">
         <div className="flex items-center gap-3">
           <button
             onClick={onBackToEdit}
-            className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition"
+            className="p-1.5 text-[#5c5c5c] hover:text-[#111111] hover:bg-black/5 rounded-[7px] transition"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-medium tracking-tight text-[#111111] flex items-center gap-2">
               <span>Review Extracted Scope</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-black/5 text-[#5c5c5c] font-mono">
                 {analysis.projectName}
               </span>
             </h1>
-            <p className="text-xs text-slate-400">
-              Review and correct the extracted deliverables before saving. You can edit items or add missing terms.
+            <p className="text-xs text-[#5c5c5c] mt-0.5">
+              Review deliverables and citations before approving. You can edit items or add missing terms.
             </p>
           </div>
         </div>
 
         <button
           onClick={handleSaveAndApprove}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-sm transition"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#141414] hover:bg-black text-white text-xs font-medium rounded-[9px] shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition duration-150 self-start sm:self-auto"
         >
           <Check className="w-4 h-4" />
           <span>Approve & Save Scope</span>
         </button>
       </div>
 
-      {/* Warnings & Citations Count */}
+      {/* Warnings & Citations Summary */}
       {analysis.warnings.length > 0 && (
-        <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-800/60 text-amber-200 text-xs space-y-1">
-          <div className="flex items-center gap-1.5 font-medium text-amber-300">
+        <div className="p-4 rounded-[14px] bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1.5">
+          <div className="flex items-center gap-1.5 font-semibold text-amber-950">
             <AlertTriangle className="w-4 h-4" />
             <span>Verification Notes</span>
           </div>
           {analysis.warnings.map((w, idx) => (
-            <p key={idx}>• {w}</p>
+            <p key={idx} className="text-[#5c5c5c]">• {w}</p>
           ))}
         </div>
       )}
 
       {/* Section 1: Deliverables */}
-      <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-3">
+      <div className="bg-[#fafbf9] p-6 rounded-[20px] border border-black/8 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <h2 className="text-sm font-semibold text-[#111111] flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>Agreed Deliverables ({scope.deliverables.length})</span>
           </h2>
-          <span className="text-[11px] text-slate-500">Core deliverables included in project</span>
+          <span className="text-[11px] text-[#5c5c5c]">Core items covered by contract</span>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {scope.deliverables.map((item) => (
             <div
               key={item.id}
-              className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/80 flex items-start justify-between gap-3 text-xs"
+              className="p-3.5 rounded-[12px] bg-white border border-black/8 flex items-start justify-between gap-3 text-xs"
             >
               <div className="space-y-1">
-                <p className="font-medium text-slate-100">{item.text}</p>
+                <p className="font-medium text-[#111111]">{item.text}</p>
                 {item.verbatimQuote && (
-                  <p className="text-[11px] text-slate-400 italic flex items-center gap-1">
-                    <Quote className="w-3 h-3 text-emerald-500 shrink-0" />
+                  <p className="text-[11px] text-[#5c5c5c] italic flex items-center gap-1.5">
+                    <Quote className="w-3 h-3 text-[#111111] shrink-0" />
                     <span>"{item.verbatimQuote}"</span>
                     {item.isVerified ? (
-                      <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-1.5 py-0.2 rounded border border-emerald-900/60 ml-1">
+                      <span className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-sans font-medium ml-1">
                         Verified verbatim
                       </span>
                     ) : (
-                      <span className="text-[10px] text-amber-400 bg-amber-950/60 px-1.5 py-0.2 rounded border border-amber-900/60 ml-1">
+                      <span className="text-[10px] text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 font-sans font-medium ml-1">
                         Unverified
                       </span>
                     )}
@@ -173,7 +173,7 @@ export const ReviewAgreementPage: React.FC<Props> = ({
               </div>
               <button
                 onClick={() => handleRemoveDeliverable(item.id)}
-                className="text-slate-500 hover:text-rose-400 p-1 transition"
+                className="text-[#5c5c5c] hover:text-rose-600 p-1 rounded transition"
                 title="Remove item"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -188,11 +188,11 @@ export const ReviewAgreementPage: React.FC<Props> = ({
               onChange={(e) => setNewDeliverableText(e.target.value)}
               placeholder="Add another deliverable..."
               onKeyDown={(e) => e.key === 'Enter' && handleAddDeliverable()}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-md px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="flex-1 bg-white border border-black/10 rounded-[9px] px-3.5 py-2 text-xs text-[#111111] placeholder-[#888888] focus:outline-none focus:border-black transition"
             />
             <button
               onClick={handleAddDeliverable}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md text-xs font-medium flex items-center gap-1 transition"
+              className="px-4 py-2 bg-black/5 hover:bg-black/10 text-[#111111] rounded-[9px] text-xs font-medium flex items-center gap-1 transition"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add</span>
@@ -202,29 +202,29 @@ export const ReviewAgreementPage: React.FC<Props> = ({
       </div>
 
       {/* Section 2: Explicit Exclusions */}
-      <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-3">
+      <div className="bg-[#fafbf9] p-6 rounded-[20px] border border-black/8 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-400" />
+          <h2 className="text-sm font-semibold text-[#111111] flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-600" />
             <span>Explicit Exclusions ({scope.explicitExclusions.length})</span>
           </h2>
-          <span className="text-[11px] text-slate-500">Items expressly agreed as out of scope</span>
+          <span className="text-[11px] text-[#5c5c5c]">Items expressly agreed as out of scope</span>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {scope.explicitExclusions.map((item) => (
             <div
               key={item.id}
-              className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/80 flex items-start justify-between gap-3 text-xs"
+              className="p-3.5 rounded-[12px] bg-white border border-black/8 flex items-start justify-between gap-3 text-xs"
             >
               <div className="space-y-1">
-                <p className="font-medium text-amber-200">{item.text}</p>
+                <p className="font-medium text-amber-900">{item.text}</p>
                 {item.verbatimQuote && (
-                  <p className="text-[11px] text-slate-400 italic flex items-center gap-1">
-                    <Quote className="w-3 h-3 text-amber-500 shrink-0" />
+                  <p className="text-[11px] text-[#5c5c5c] italic flex items-center gap-1.5">
+                    <Quote className="w-3 h-3 text-amber-600 shrink-0" />
                     <span>"{item.verbatimQuote}"</span>
                     {item.isVerified && (
-                      <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-1.5 py-0.2 rounded border border-emerald-900/60 ml-1">
+                      <span className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-sans font-medium ml-1">
                         Verified verbatim
                       </span>
                     )}
@@ -233,7 +233,7 @@ export const ReviewAgreementPage: React.FC<Props> = ({
               </div>
               <button
                 onClick={() => handleRemoveExclusion(item.id)}
-                className="text-slate-500 hover:text-rose-400 p-1 transition"
+                className="text-[#5c5c5c] hover:text-rose-600 p-1 rounded transition"
                 title="Remove exclusion"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -248,11 +248,11 @@ export const ReviewAgreementPage: React.FC<Props> = ({
               onChange={(e) => setNewExclusionText(e.target.value)}
               placeholder="Add another explicit exclusion..."
               onKeyDown={(e) => e.key === 'Enter' && handleAddExclusion()}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-md px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500"
+              className="flex-1 bg-white border border-black/10 rounded-[9px] px-3.5 py-2 text-xs text-[#111111] placeholder-[#888888] focus:outline-none focus:border-black transition"
             />
             <button
               onClick={handleAddExclusion}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md text-xs font-medium flex items-center gap-1 transition"
+              className="px-4 py-2 bg-black/5 hover:bg-black/10 text-[#111111] rounded-[9px] text-xs font-medium flex items-center gap-1 transition"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add</span>
@@ -261,54 +261,54 @@ export const ReviewAgreementPage: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Section 3: Revision Policy & Constraints */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-2">
-          <h3 className="text-xs font-semibold text-slate-300">Revision Policy</h3>
+      {/* Section 3: Revision Policy & Ambiguities */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="bg-[#fafbf9] p-5 rounded-[20px] border border-black/8 shadow-sm space-y-2">
+          <h3 className="text-xs font-semibold text-[#111111]">Revision Policy</h3>
           {scope.revisionPolicy ? (
-            <div className="p-2.5 rounded bg-slate-950 border border-slate-800 text-xs">
-              <p className="font-medium text-slate-200">{scope.revisionPolicy.text}</p>
+            <div className="p-3 rounded-[10px] bg-white border border-black/8 text-xs space-y-1">
+              <p className="font-medium text-[#111111]">{scope.revisionPolicy.text}</p>
               {scope.revisionPolicy.verbatimQuote && (
-                <p className="text-[11px] text-slate-400 mt-1 italic">
+                <p className="text-[11px] text-[#5c5c5c] italic">
                   "{scope.revisionPolicy.verbatimQuote}"
                 </p>
               )}
             </div>
           ) : (
-            <p className="text-xs text-slate-500 italic">No revision policy specified in the agreement.</p>
+            <p className="text-xs text-[#5c5c5c] italic">No revision policy specified in the agreement.</p>
           )}
         </div>
 
-        <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-2">
-          <h3 className="text-xs font-semibold text-slate-300">
+        <div className="bg-[#fafbf9] p-5 rounded-[20px] border border-black/8 shadow-sm space-y-2">
+          <h3 className="text-xs font-semibold text-[#111111]">
             Ambiguities or Conflicting Clauses ({scope.ambiguousOrConflictingClauses.length})
           </h3>
           {scope.ambiguousOrConflictingClauses.length > 0 ? (
-            <ul className="text-xs text-sky-300/90 space-y-1">
+            <ul className="text-xs text-[#5c5c5c] space-y-1.5">
               {scope.ambiguousOrConflictingClauses.map((clause, idx) => (
-                <li key={idx} className="p-1.5 rounded bg-sky-950/30 border border-sky-900/40">
+                <li key={idx} className="p-2 rounded-[8px] bg-white border border-black/8">
                   • {clause}
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-xs text-slate-500 italic">No conflicting clauses detected.</p>
+            <p className="text-xs text-[#5c5c5c] italic">No conflicting clauses detected.</p>
           )}
         </div>
       </div>
 
       {/* Bottom Save Action */}
-      <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+      <div className="pt-6 border-t border-black/8 flex items-center justify-between">
         <button
           onClick={onBackToEdit}
-          className="text-xs text-slate-400 hover:text-slate-200 transition"
+          className="text-xs text-[#5c5c5c] hover:text-[#111111] transition"
         >
           ← Back to Edit Agreement
         </button>
 
         <button
           onClick={handleSaveAndApprove}
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-sm transition"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#141414] hover:bg-black text-white text-xs font-medium rounded-[9px] shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition duration-150"
         >
           <Check className="w-4 h-4" />
           <span>Approve & Save Scope</span>

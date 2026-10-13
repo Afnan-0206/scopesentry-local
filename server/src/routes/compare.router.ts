@@ -18,7 +18,7 @@ compareRouter.post(
   validateBody(CompareRequestInputSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { projectId, originalAgreementText, approvedScope, newClientRequest } = req.body;
+      const { projectId, originalAgreementText, approvedScope, newClientRequest, model } = req.body;
 
       const { systemPrompt, userPrompt } = buildScopeComparisonPrompt(
         originalAgreementText,
@@ -28,7 +28,7 @@ compareRouter.post(
 
       let rawModelOutput: any;
       try {
-        rawModelOutput = await defaultOllamaService.chatJson<any>(systemPrompt, userPrompt);
+        rawModelOutput = await defaultOllamaService.chatJson<any>(systemPrompt, userPrompt, model);
       } catch (err: any) {
         res.status(503).json({
           error: `Local model comparison failed: ${err.message}`,

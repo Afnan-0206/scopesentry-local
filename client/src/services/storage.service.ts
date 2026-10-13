@@ -56,9 +56,23 @@ export class StorageService {
     }
   }
 
+  public static getCustomApiUrl(): string {
+    return localStorage.getItem('scopesentry_custom_api_url_v1') || '';
+  }
+
+  public static setCustomApiUrl(url: string): void {
+    const trimmed = url.trim().replace(/\/+$/, '');
+    if (trimmed) {
+      localStorage.setItem('scopesentry_custom_api_url_v1', trimmed);
+    } else {
+      localStorage.removeItem('scopesentry_custom_api_url_v1');
+    }
+  }
+
   public static clearAllData(): void {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(DEMO_STORAGE_KEY);
+    localStorage.removeItem('scopesentry_custom_api_url_v1');
   }
 
   public static exportProjectJson(project: StoredProject): string {

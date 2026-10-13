@@ -26,11 +26,19 @@ export interface BackendHealth {
   };
 }
 
+import { StorageService } from './storage.service.js';
+
 export class ApiService {
-  private static baseUrl = ''; // Proxied via Vite to http://127.0.0.1:3001
+  public static getBaseUrl(): string {
+    const custom = StorageService.getCustomApiUrl();
+    if (custom) return custom;
+    const envUrl = (import.meta as any).env?.VITE_API_URL;
+    if (envUrl) return String(envUrl).replace(/\/+$/, '');
+    return '';
+  }
 
   public static async getHealth(): Promise<BackendHealth> {
-    const res = await fetch(`${this.baseUrl}/api/health`);
+    const res = await fetch(`${this.getBaseUrl()}/api/health`);
     if (!res.ok) {
       throw new Error(`Backend health check failed with status ${res.status}`);
     }
@@ -38,7 +46,7 @@ export class ApiService {
   }
 
   public static async getModels(): Promise<{ models: string[]; configured: string; isConfiguredAvailable: boolean }> {
-    const res = await fetch(`${this.baseUrl}/api/models`);
+    const res = await fetch(`${this.getBaseUrl()}/api/models`);
     if (!res.ok) {
       throw new Error(`Failed to fetch models from local backend`);
     }
@@ -77,7 +85,7 @@ export class ApiService {
       };
     }
 
-    const res = await fetch(`${this.baseUrl}/api/agreements/analyze`, {
+    const res = await fetch(`${this.getBaseUrl()}/api/agreements/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),
@@ -133,7 +141,7 @@ export class ApiService {
       };
     }
 
-    const res = await fetch(`${this.baseUrl}/api/compare`, {
+    const res = await fetch(`${this.getBaseUrl()}/api/compare`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),
@@ -162,7 +170,7 @@ export class ApiService {
       };
     }
 
-    const res = await fetch(`${this.baseUrl}/api/replies/draft`, {
+    const res = await fetch(`${this.getBaseUrl()}/api/replies/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),

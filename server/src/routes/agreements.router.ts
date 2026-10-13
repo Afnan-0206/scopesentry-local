@@ -16,14 +16,14 @@ agreementsRouter.post(
   validateBody(AnalyzeAgreementInputSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { originalAgreementText } = req.body;
+      const { originalAgreementText, model } = req.body;
 
       const { systemPrompt, userPrompt } = buildAgreementExtractionPrompt(originalAgreementText);
 
       // Request structured extraction from local Ollama
       let rawExtraction: any;
       try {
-        rawExtraction = await defaultOllamaService.chatJson<any>(systemPrompt, userPrompt);
+        rawExtraction = await defaultOllamaService.chatJson<any>(systemPrompt, userPrompt, model);
       } catch (err: any) {
         res.status(503).json({
           error: `Local model extraction failed: ${err.message}`,

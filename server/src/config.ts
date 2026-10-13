@@ -11,7 +11,7 @@ export const CONFIG = {
   FRONTEND_ORIGIN: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
   OLLAMA_BASE_URL: (process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434').replace(/\/+$/, ''),
   OLLAMA_MODEL: process.env.OLLAMA_MODEL || 'qwen2.5:7b',
-  OLLAMA_TIMEOUT_MS: parseInt(process.env.OLLAMA_TIMEOUT_MS || '120000', 10),
+  OLLAMA_TIMEOUT_MS: parseInt(process.env.OLLAMA_TIMEOUT_MS || '300000', 10),
   MAX_AGREEMENT_CHARS: parseInt(process.env.MAX_AGREEMENT_CHARS || '20000', 10),
   MAX_REQUEST_CHARS: parseInt(process.env.MAX_REQUEST_CHARS || '10000', 10),
 };
