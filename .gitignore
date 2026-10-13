@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing and coverage
+coverage/
+
+# Production build outputs
+dist/
+build/
+
+# Environment files (never commit real secrets)
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Scratch / temp
+scratch/
